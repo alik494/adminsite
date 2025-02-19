@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/apps/adminsite51/clientlibs"/>
+    <filter root="/apps/adminsite51/components"/>
+    <filter root="/apps/adminsite51/i18n"/>
+    <filter root="/apps/fd/af/theme-clientlibs" mode="merge"/>
+
+    <filter root="/apps/sling" />
+</workspaceFilter>

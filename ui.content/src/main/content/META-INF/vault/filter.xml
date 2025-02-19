@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/conf/adminsite51" mode="merge"/>
+    <filter root="/content/adminsite51" mode="merge"/>
+    <filter root="/content/dam/adminsite51" mode="merge">
+        <exclude pattern="/content/dam/adminsite51(/.*)?"/>
+        <include pattern="/content/dam/adminsite51/jcr:content(/.*)?"/>
+    </filter>
+    <filter root="/content/dam/adminsite51/asset.jpg" mode="merge"/>
+    <filter root="/content/experience-fragments/adminsite51" mode="merge"/>
+    <filter root="/var/commerce/products/adminsite51-default" mode="merge"/>
+    <filter root="/content/dam/formsanddocuments-themes/adminsite51" mode="merge"/>
+    <filter root="/content/dam/formsanddocuments-fdm/adminsite51" mode="merge"/>
+    <filter root="/content/dam/adminsite51/sample_logo.png" mode="merge"/>
+    <filter root="/content/dam/adminsite51/sample_terms.png" mode="merge"/>
+    <filter root="/content/dam/adminsite51/wknd_logo.png" mode="merge"/>
+    <filter root="/content/dam/adminsite51/af_model_sample.json" mode="merge"/>
+</workspaceFilter>
