@@ -1,0 +1,56 @@
+.form-container {
+    float: left;
+    width: 33%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.results-container {
+    float: right;
+    width: 66%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.search_container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.coral-Form-fieldwrapper {
+    margin-bottom: 15px;
+}
+
+.coral-Form-fieldlabel {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    background-color: #0072C6;
+    color: white;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover {
+    background-color: #005BA1;
+}
+
+.content {
+    width: 100%;
+}
+
+.results-container table {
+    width: 100%;
+}
