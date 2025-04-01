@@ -3,7 +3,8 @@ package com.adminsite.core.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang.StringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
@@ -18,6 +19,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+@Slf4j
 @Component(service = Servlet.class,
         property = {
                 Constants.SERVICE_DESCRIPTION + "=Search Component Servlet with Jackson",
@@ -47,21 +49,33 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
 
         response.setContentType(APPLICATION_JSON);
 
+        if (StringUtils.isBlank(rootPath)) {
+            log.error("Missing required parameter: {}", ROOT_PATH);
+            response.setStatus(SlingHttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(objectMapper.createObjectNode()
+                    .put("error", "Missing required parameter: " + ROOT_PATH).toString());
+            return;
+        }
+
         try (ResourceResolver resourceResolver = request.getResourceResolver()) {
             // Getting the root resource
             Resource rootResource = resourceResolver.getResource(rootPath);
 
             if (rootResource == null) {
+                log.warn("Root resource not found at path: {}", rootPath);
                 response.setStatus(SlingHttpServletResponse.SC_NOT_FOUND);
                 response.getWriter().write(objectMapper.createObjectNode()
                         .put("error", "Root resource not found at path: " + rootPath).toString());
                 return;
             }
 
+            log.info("Processing resources under rootPath: {}", rootPath);
+
             ArrayNode jsonArray = objectMapper.createArrayNode();
 
             for (Resource subResource : rootResource.getChildren()) {
                 if (matchesProperty(subResource, propertyName, propertyValue)) {
+                    log.debug("Matched resource: {}", subResource.getPath());
                     ObjectNode jsonObject = objectMapper.createObjectNode();
                     jsonObject.put(PROPERTY_VALUE_NAME, getProperty(subResource, PROPERTY_JCR_TITLE));
                     jsonObject.put(PROPERTY_DESCRIPTION, getProperty(subResource, PROPERTY_JCR_DESCRIPTION));
@@ -73,6 +87,7 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
 
             objectMapper.writeValue(response.getWriter(), jsonArray);
         } catch (Exception e) {
+            log.error("An error occurred while processing the request", e);
             response.setStatus(SlingHttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write(objectMapper.createObjectNode()
                     .put("error", "Error occurred: " + e.getMessage()).toString());
@@ -81,12 +96,21 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
 
     private String getProperty(Resource resource, String propertyName) {
         Object propertyValue = resource.getValueMap().get(propertyName);
+        if (propertyValue != null) {
+            log.debug("Property found: {} = {}", propertyName, propertyValue.toString());
+        }
         return propertyValue != null ? propertyValue.toString() : StringUtils.EMPTY;
     }
 
     private boolean matchesProperty(Resource resource, String propertyName, String propertyValue) {
+        if (StringUtils.isBlank(propertyName) || StringUtils.isBlank(propertyValue)) {
+            log.debug("No valid propertyName or propertyValue provided, skipping filter.");
+            return true;
+        }
         Object value = resource.getValueMap().get(propertyName);
-        return value != null && propertyValue.equals(value.toString());
+        boolean matches = value != null && propertyValue.equals(value.toString());
+        log.debug("Checking match for resource: {}, property: {}, value: {}, matches: {}",
+                resource.getPath(), propertyName, value, matches);
+        return matches;
     }
-
 }
