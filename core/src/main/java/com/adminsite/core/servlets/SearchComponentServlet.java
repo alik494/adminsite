@@ -19,6 +19,11 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+import static com.day.cq.commons.jcr.JcrConstants.JCR_DESCRIPTION;
+import static com.day.cq.commons.jcr.JcrConstants.JCR_TITLE;
+import static com.day.cq.wcm.foundation.forms.FormsConstants.PROPERTY_RST;
+import static org.apache.oltu.oauth2.common.OAuth.ContentType.JSON;
+
 @Slf4j
 @Component(service = Servlet.class,
         property = {
@@ -32,14 +37,10 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
     private static final String ROOT_PATH = "rootPath";
     private static final String PROPERTY_NAME = "propertyName";
     private static final String PROPERTY_VALUE = "propertyValue";
-    private static final String PROPERTY_JCR_TITLE = "jcr:title";
-    private static final String PROPERTY_JCR_DESCRIPTION = "jcr:description";
-    private static final String PROPERTY_SLING_RES_TYPE = "sling:resourceSuperType";
     private static final String PROPERTY_VALUE_NAME = "name";
     private static final String PROPERTY_DESCRIPTION = "description";
     private static final String PROPERTY_RES_TYPE = "restype";
     private static final String PROPERTY_PATH = "path";
-    private static final String APPLICATION_JSON = "application/json";
 
     @Override
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
@@ -47,7 +48,7 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
         String propertyName = request.getParameter(PROPERTY_NAME);
         String propertyValue = request.getParameter(PROPERTY_VALUE);
 
-        response.setContentType(APPLICATION_JSON);
+        response.setContentType(JSON);
 
         if (StringUtils.isBlank(rootPath)) {
             log.error("Missing required parameter: {}", ROOT_PATH);
@@ -58,7 +59,6 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
         }
 
         try (ResourceResolver resourceResolver = request.getResourceResolver()) {
-            // Getting the root resource
             Resource rootResource = resourceResolver.getResource(rootPath);
 
             if (rootResource == null) {
@@ -77,9 +77,9 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
                 if (matchesProperty(subResource, propertyName, propertyValue)) {
                     log.debug("Matched resource: {}", subResource.getPath());
                     ObjectNode jsonObject = objectMapper.createObjectNode();
-                    jsonObject.put(PROPERTY_VALUE_NAME, getProperty(subResource, PROPERTY_JCR_TITLE));
-                    jsonObject.put(PROPERTY_DESCRIPTION, getProperty(subResource, PROPERTY_JCR_DESCRIPTION));
-                    jsonObject.put(PROPERTY_RES_TYPE, getProperty(subResource, PROPERTY_SLING_RES_TYPE));
+                    jsonObject.put(PROPERTY_VALUE_NAME, getProperty(subResource, JCR_TITLE));
+                    jsonObject.put(PROPERTY_DESCRIPTION, getProperty(subResource, JCR_DESCRIPTION));
+                    jsonObject.put(PROPERTY_RES_TYPE, getProperty(subResource, PROPERTY_RST));
                     jsonObject.put(PROPERTY_PATH, subResource.getPath());
                     jsonArray.add(jsonObject);
                 }
