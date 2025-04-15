@@ -65,6 +65,7 @@ $(document).ready(function() {
 
                        table.append(row);
                     });
+                    addExportCSVButton(response);
                  } else {
                      console.error("Coral table element is not found on the page.");
                  }
@@ -74,4 +75,37 @@ $(document).ready(function() {
             }
         });
     });
+
+    function addExportCSVButton(data) {
+        $(".exportCSVButton").click(function() {
+            generateAndDownloadCSV(data);
+        });
+    }
+
+    function generateAndDownloadCSV(jsonData) {
+        if (!jsonData || jsonData.length === 0) {
+            alert('No data available to export');
+            return;
+        }
+
+        const headers = Object.keys(jsonData[0]).join(',') + '\n';
+
+        const rows = jsonData.map(obj => {
+            return Object.values(obj).join(',');
+        }).join('\n');
+
+        const csvContent = headers + rows;
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'data.csv');
+        link.style.visibility = 'hidden';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 });

@@ -77,17 +77,14 @@
                         variant="actionBar"/>
             </primary>
             <secondary jcr:primaryType="nt:unstructured">
-                <save
-                        granite:class="foundation-wizard-control"
+                <export
+                        granite:class="exportCSVButton"
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/button"
-                        text="Save"
+                        text="Export"
                         type="submit"
                         variant="primary">
-                    <granite:data
-                            jcr:primaryType="nt:unstructured"
-                            foundation-wizard-control-action="save"/>
-                </save>
+                </export>
             </secondary>
         </actions>
     </jcr:content>
