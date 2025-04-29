@@ -7,14 +7,14 @@ $(document).ready(function() {
         let propertyValueValue = $("input[name='propertyValue']").val();
 
         $.ajax({
-            url: '/bin/searchComponents',
-            type: 'GET',
+            url: "/bin/searchComponents",
+            type: "GET",
             data: {
                 rootPath: rootPathValue,
                 propertyName: propertyNameValue,
                 propertyValue: propertyValueValue
             },
-            dataType: 'json',
+            dataType: "json",
             success: function(response) {
                 let table =  $(".coral-Table");
 
@@ -84,25 +84,25 @@ $(document).ready(function() {
 
     function generateAndDownloadCSV(jsonData) {
         if (!jsonData || jsonData.length === 0) {
-            alert('No data available to export');
+            alert("No data available to export");
             return;
         }
 
-        const headers = Object.keys(jsonData[0]).join(',') + '\n';
+        const headers = Object.keys(jsonData[0]).join(",") + "\n";
 
         const rows = jsonData.map(obj => {
-            return Object.values(obj).join(',');
-        }).join('\n');
+            return Object.values(obj).join(",");
+        }).join("\n");
 
         const csvContent = headers + rows;
 
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
 
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'data.csv');
-        link.style.visibility = 'hidden';
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "data.csv");
+        link.style.visibility = "hidden";
 
         document.body.appendChild(link);
         link.click();
