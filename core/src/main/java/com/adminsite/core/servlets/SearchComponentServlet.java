@@ -100,6 +100,6 @@ public class SearchComponentServlet extends SlingSafeMethodsServlet {
         if (propertyValue != null) {
             log.debug("Property found: {} = {}", propertyName, propertyValue.toString());
         }
-        return propertyValue != null ? propertyValue.toString() : StringUtils.EMPTY;
+        return StringUtils.defaultString(propertyValue != null ? propertyValue.toString() : null);
     }
 }
