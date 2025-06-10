@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          jcr:primaryType="cq:Page"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0">
+    <jcr:content
+            sling:resourceType="granite/ui/components/shell/page"
+            jcr:primaryType="nt:unstructured">
+        <head jcr:primaryType="nt:unstructured">
+            <clientlibs
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/includeclientlibs"
+                    categories="[adminservices.clientlibs]"/>
+        </head>
+        <title
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Search tool"
+                sling:resourceType="granite/ui/components/shell/title"/>
+        <content
+                jcr:primaryType="nt:unstructured"
+                granite:class="search_container"
+                sling:resourceType="granite/ui/components/coral/foundation/container">
+            <items jcr:primaryType="nt:unstructured"
+                   sling:resourceType="granite/ui/components/coral/foundation/form">
+                <form jcr:primaryType="nt:unstructured"
+                      granite:class="form-container"
+                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                    <items jcr:primaryType="nt:unstructured">
+                        <rootPath
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="Root Path"
+                                name="rootPath"/>
+                        <propertyName
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="Property Name"
+                                name="propertyName"/>
+                        <propertyValue
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                fieldLabel="Property Value"
+                                name="propertyValue"/>
+                        <searchButton
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/submit"
+                                text="Search"/>
+                        <search
+                                granite:class="searchButton"
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/button"
+                                text="Search"
+                                type="submit"
+                                variant="primary">
+                        </search>
+                    </items>
+                </form>
+                <infoDesk
+                        jcr:primaryType="nt:unstructured"
+                        granite:class="results-container"
+                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                    <items jcr:primaryType="nt:unstructured">
+                        <results
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/table"
+                                emptyText="No results found"/>
+                    </items>
+                </infoDesk>
+            </items>
+        </content>
+        <actions jcr:primaryType="nt:unstructured">
+            <primary jcr:primaryType="nt:unstructured">
+                <home jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/anchorbutton"
+                        href="${&quot;/&quot;}"
+                        icon="home"
+                        variant="actionBar"/>
+            </primary>
+            <secondary jcr:primaryType="nt:unstructured">
+                <export
+                        granite:class="exportCSVButton"
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/button"
+                        text="Export"
+                        type="submit"
+                        variant="primary">
+                </export>
+            </secondary>
+        </actions>
+    </jcr:content>
+</jcr:root>
