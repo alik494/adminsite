@@ -1,0 +1,5 @@
+{
+  "user.mapping":[
+    "adminsite51.core:adminsite-user-service=adminsite-user-service"
+  ]
+}

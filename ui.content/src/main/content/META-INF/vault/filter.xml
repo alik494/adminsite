@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workspaceFilter version="1.0">
     <filter root="/conf/adminsite51" mode="merge"/>
+    <filter root="/conf/global/settings/workflow/launcher/config/dropbox-launcher" mode="replace"/>
+    <filter root="/conf/global/settings/workflow/models/adminsite/dropbox-approval" mode="replace"/>
+    <filter root="/var/workflow/models/adminsite" mode="update"/>
     <filter root="/content/adminsite51" mode="merge"/>
     <filter root="/content/dam/adminsite51" mode="merge">
         <exclude pattern="/content/dam/adminsite51(/.*)?"/>

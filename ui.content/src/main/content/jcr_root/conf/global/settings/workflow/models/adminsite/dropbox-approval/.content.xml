@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Page">
+    <jcr:content
+        cq:designPath="/apps/settings/wcm/designs/adminsite"
+        cq:template="/libs/cq/workflow/templates/model"
+        jcr:primaryType="cq:PageContent"
+        jcr:title="Dropbox Approval WF"
+        sling:resourceType="cq/workflow/components/pages/model">
+        <flow
+            jcr:primaryType="nt:unstructured"
+            sling:resourceType="foundation/components/parsys">
+            <approve_reject_dialo
+                jcr:description="A participant step that is using a dialog for completion."
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Dialog Participant"
+                sling:resourceType="adminsite51/workflows/approve-reject-dialog-step">
+                <metaData
+                    jcr:primaryType="nt:unstructured"
+                    DIALOG_PATH="/apps/adminsite51/workflows/approve-reject-dialog/cq:dialog"
+                    PARTICIPANT="adminsite-approvers"/>
+            </approve_reject_dialo>
+            <or
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="cq/workflow/components/model/or"
+                branches="2"
+                branchName1="approve"
+                branchName2="reject"
+                branchOrder="[0,1]"
+                orSplit="true">
+                <_x0032_
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="cq/flow/components/parsys">
+                    <process_copy
+                        jcr:description="Send Reject Email "
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Reject "
+                        sling:resourceType="cq/workflow/components/model/process">
+                        <metaData
+                            jcr:primaryType="nt:unstructured"
+                            PROCESS="com.adminsite.core.workflows.EmailNotificationWorkflowProcess"
+                            PROCESS_AUTO_ADVANCE="true"/>
+                    </process_copy>
+                </_x0032_>
+                <_x0031_
+                    jcr:primaryType="nt:unstructured"
+                    sling:resourceType="cq/flow/components/parsys">
+                    <node5
+                        jcr:description="Move approved asset to the designated folder."
+                        jcr:primaryType="cq:WorkflowNode"
+                        title="Approve and proceed"
+                        type="PROCESS">
+                        <metaData
+                            jcr:primaryType="nt:unstructured"
+                            PROCESS="com.adminsite.core.workflows.MoveAssetWorkflowProcess"
+                            PROCESS_AUTO_ADVANCE="true"/>
+                    </node5>
+                    <reject_dialog
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="adminsite51/workflows/reject-dialog"/>
+                    <reject_dialog_1314974067
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="adminsite51/workflows/reject-dialog"/>
+                    <process
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Approve"
+                        sling:resourceType="cq/workflow/components/model/process">
+                        <metaData
+                            jcr:primaryType="nt:unstructured"
+                            PROCESS="com.adminsite.core.workflows.MoveApprovedAssetWorkflowProcess"
+                            PROCESS_AUTO_ADVANCE="true"/>
+                    </process>
+                    <process_copy_copy
+                        jcr:primaryType="nt:unstructured"
+                        jcr:title="Send Approve Email "
+                        sling:resourceType="cq/workflow/components/model/process">
+                        <metaData
+                            jcr:primaryType="nt:unstructured"
+                            PROCESS="com.adminsite.core.workflows.EmailNotificationWorkflowProcess"
+                            PROCESS_AUTO_ADVANCE="true"/>
+                    </process_copy_copy>
+                </_x0031_>
+            </or>
+        </flow>
+    </jcr:content>
+</jcr:root>
