@@ -21,8 +21,8 @@ $(document).ready(function () {
         } else if (selectedText.toLowerCase() === "approve") {
           reasonInputWrapper.hide();
           pathToMoveInputWrapper.show();
+          reasonInput.val("");
           reasonInput.removeAttr("aria-required");
-        } else {
         }
       }
     };

@@ -17,6 +17,15 @@
         </node0>
         <node1
             jcr:primaryType="cq:WorkflowNode"
+            title="Check"
+            type="PROCESS">
+            <metaData
+                jcr:primaryType="nt:unstructured"
+                PROCESS="com.adminsite.core.workflows.DropboxWFCheckWorkflowProcess"
+                PROCESS_AUTO_ADVANCE="true"/>
+        </node1>
+        <node2
+            jcr:primaryType="cq:WorkflowNode"
             description="A participant step that is using a dialog for completion."
             title="Dialog Participant"
             type="PARTICIPANT">
@@ -24,20 +33,20 @@
                 jcr:primaryType="nt:unstructured"
                 DIALOG_PATH="/apps/adminsite51/workflows/approve-reject-dialog/cq:dialog"
                 PARTICIPANT="adminsite-approvers"/>
-        </node1>
-        <node2
+        </node2>
+        <node3
             jcr:primaryType="cq:WorkflowNode"
             title="OR_SPLIT"
             type="OR_SPLIT">
             <metaData jcr:primaryType="nt:unstructured"/>
-        </node2>
-        <node3
+        </node3>
+        <node4
             jcr:primaryType="cq:WorkflowNode"
             title="OR_JOIN"
             type="OR_JOIN">
             <metaData jcr:primaryType="nt:unstructured"/>
-        </node3>
-        <node4
+        </node4>
+        <node5
             jcr:primaryType="cq:WorkflowNode"
             description="Send Reject Email "
             title="Reject "
@@ -46,8 +55,8 @@
                 jcr:primaryType="nt:unstructured"
                 PROCESS="com.adminsite.core.workflows.EmailNotificationWorkflowProcess"
                 PROCESS_AUTO_ADVANCE="true"/>
-        </node4>
-        <node5
+        </node5>
+        <node6
             jcr:primaryType="cq:WorkflowNode"
             title="Approve"
             type="PROCESS">
@@ -55,8 +64,8 @@
                 jcr:primaryType="nt:unstructured"
                 PROCESS="com.adminsite.core.workflows.MoveApprovedAssetWorkflowProcess"
                 PROCESS_AUTO_ADVANCE="true"/>
-        </node5>
-        <node6
+        </node6>
+        <node7
             jcr:primaryType="cq:WorkflowNode"
             title="Send Approve Email "
             type="PROCESS">
@@ -64,13 +73,13 @@
                 jcr:primaryType="nt:unstructured"
                 PROCESS="com.adminsite.core.workflows.EmailNotificationWorkflowProcess"
                 PROCESS_AUTO_ADVANCE="true"/>
-        </node6>
-        <node7
+        </node7>
+        <node8
             jcr:primaryType="cq:WorkflowNode"
             title="End"
             type="END">
             <metaData jcr:primaryType="nt:unstructured"/>
-        </node7>
+        </node8>
     </nodes>
     <transitions jcr:primaryType="nt:unstructured">
         <node0_x0023_node1
@@ -83,51 +92,58 @@
         <node1_x0023_node2
             jcr:primaryType="cq:WorkflowTransition"
             from="node1"
+            rule=""
             to="node2">
             <metaData jcr:primaryType="nt:unstructured"/>
         </node1_x0023_node2>
-        <node2_x0023_node4
+        <node2_x0023_node3
             jcr:primaryType="cq:WorkflowTransition"
             from="node2"
-            rule=""
-            to="node4">
-            <metaData
-                jcr:primaryType="nt:unstructured"
-                isDefault="false"/>
-        </node2_x0023_node4>
-        <node4_x0023_node3
-            jcr:primaryType="cq:WorkflowTransition"
-            from="node4"
             to="node3">
             <metaData jcr:primaryType="nt:unstructured"/>
-        </node4_x0023_node3>
-        <node2_x0023_node5
+        </node2_x0023_node3>
+        <node3_x0023_node5
             jcr:primaryType="cq:WorkflowTransition"
-            from="node2"
+            from="node3"
             rule=""
             to="node5">
             <metaData
                 jcr:primaryType="nt:unstructured"
                 isDefault="false"/>
-        </node2_x0023_node5>
-        <node5_x0023_node6
+        </node3_x0023_node5>
+        <node5_x0023_node4
             jcr:primaryType="cq:WorkflowTransition"
             from="node5"
-            rule=""
-            to="node6">
+            to="node4">
             <metaData jcr:primaryType="nt:unstructured"/>
-        </node5_x0023_node6>
-        <node6_x0023_node3
-            jcr:primaryType="cq:WorkflowTransition"
-            from="node6"
-            to="node3">
-            <metaData jcr:primaryType="nt:unstructured"/>
-        </node6_x0023_node3>
-        <node3_x0023_node7
+        </node5_x0023_node4>
+        <node3_x0023_node6
             jcr:primaryType="cq:WorkflowTransition"
             from="node3"
+            rule=""
+            to="node6">
+            <metaData
+                jcr:primaryType="nt:unstructured"
+                isDefault="false"/>
+        </node3_x0023_node6>
+        <node6_x0023_node7
+            jcr:primaryType="cq:WorkflowTransition"
+            from="node6"
+            rule=""
             to="node7">
             <metaData jcr:primaryType="nt:unstructured"/>
-        </node3_x0023_node7>
+        </node6_x0023_node7>
+        <node7_x0023_node4
+            jcr:primaryType="cq:WorkflowTransition"
+            from="node7"
+            to="node4">
+            <metaData jcr:primaryType="nt:unstructured"/>
+        </node7_x0023_node4>
+        <node4_x0023_node8
+            jcr:primaryType="cq:WorkflowTransition"
+            from="node4"
+            to="node8">
+            <metaData jcr:primaryType="nt:unstructured"/>
+        </node4_x0023_node8>
     </transitions>
 </jcr:root>
