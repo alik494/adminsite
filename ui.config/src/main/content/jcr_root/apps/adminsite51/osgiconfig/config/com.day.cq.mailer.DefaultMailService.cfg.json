@@ -1,0 +1,5 @@
+{
+  "smtp.host":"localhost",
+  "from.address":"epam@epam.com",
+  "smtp.port": "25"
+}

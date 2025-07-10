@@ -3,7 +3,7 @@
     jcr:description="Admin Tool"
     jcr:primaryType="nt:unstructured"
     jcr:title="Admin Tools"
-    href="/apps/adminsite51/adminservices/search/templates/searchtool.html"
+    href="/apps/adminsite51/clientlibs/adminservices/search/templates/searchtool.html"
     icon="orbit"
     id="adminservices"
     target="_blank"/>
