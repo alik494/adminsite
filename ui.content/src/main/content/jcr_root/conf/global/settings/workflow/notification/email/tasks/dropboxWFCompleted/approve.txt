@@ -192,7 +192,7 @@
                                                          <tbody>
                                                             <tr>
                                                                <td data-bgcolor="bg-button" data-size="size button" data-min="10" data-max="16" class="btn" align="center" style="font:12px/14px Arial, Helvetica, sans-serif; color:#292c34; text-transform:uppercase; mso-padding-alt:12px 10px 10px; border-radius:2px;" bgcolor="#f9f9f9">
-                                                                  <a target="_blank" style="text-decoration:none; color:#292c34; display:block; padding:12px 10px 10px;" href="${host}${assetPath}">Take a look</a>
+                                                                  <a target="_blank" style="text-decoration:none; color:#292c34; display:block; padding:12px 10px 10px;" href="${assetPathExternal}">Take a look</a>
                                                                </td>
                                                             </tr>
                                                          </tbody>

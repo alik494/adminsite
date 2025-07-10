@@ -23,6 +23,7 @@ import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
 public class DropboxWFCheckWorkflowProcess implements WorkflowProcess {
 
     public static final String WORKFLOW_PROCESS_NAME = "Check Dropbox WF process";
+    public static final String PROPERTY_WORKFLOW_PROCESSED = "workflowProcessed";
 
     @Reference
     private ResourceResolverFactory resourceResolverFactory;
@@ -48,7 +49,7 @@ public class DropboxWFCheckWorkflowProcess implements WorkflowProcess {
             Resource contentResource = assetResource.getChild(JCR_CONTENT);
             if (contentResource != null) {
                 ValueMap properties = contentResource.getValueMap();
-                boolean isProcessed = properties.get("workflowProcessed", false);
+                boolean isProcessed = properties.get(PROPERTY_WORKFLOW_PROCESSED, false);
                 log.info("'workflowProcessed' property for resource {} is: {}", assetPath, isProcessed);
                 return isProcessed;
             } else {

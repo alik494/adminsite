@@ -13,8 +13,6 @@ import org.apache.sling.api.resource.*;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import java.util.Collections;
 
 import static com.adminsite.core.workflows.MoveApprovedAssetWorkflowProcess.WORKFLOW_PROCESS_NAME;
@@ -26,6 +24,9 @@ import static com.day.cq.commons.jcr.JcrConstants.JCR_CONTENT;
 public class MoveApprovedAssetWorkflowProcess implements WorkflowProcess {
 
     public static final String WORKFLOW_PROCESS_NAME = "Move Approved Asset";
+    public static final String PROPERTY_WORKFLOW_PROCESSED = "workflowProcessed";
+    public static final String PROPERTY_PATH_TO_MOVE = "pathToMove";
+
     public static final String PATH = "PATH";
     public static final String SLASH = "/";
 
@@ -37,9 +38,8 @@ public class MoveApprovedAssetWorkflowProcess implements WorkflowProcess {
         try (ResourceResolver resolver =
                      resourceResolverFactory.getServiceResourceResolver(Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, ADMINSITE_USER_SERVICE))) {
             AssetManager assetManager = resolver.adaptTo(AssetManager.class);
-            Session session = resolver.adaptTo(Session.class);
             String payloadPath = workItem.getWorkflowData().getPayload().toString();
-            String destinationPath = WorkflowHistoryUtil.getLatestMetadataValue(workItem, workflowSession, "pathToMove");
+            String destinationPath = WorkflowHistoryUtil.getLatestMetadataValue(workItem, workflowSession, PROPERTY_PATH_TO_MOVE);
             String fileName = payloadPath.substring(payloadPath.lastIndexOf(SLASH) + 1);
             String destinationPathWithFile = destinationPath + SLASH + fileName;
             if (StringUtils.isBlank(payloadPath) || !assetManager.assetExists(payloadPath)) {
@@ -55,11 +55,10 @@ public class MoveApprovedAssetWorkflowProcess implements WorkflowProcess {
             } else if (StringUtils.isNoneBlank(destinationPath) && StringUtils.isNoneBlank(payloadPath)) {
                 addWorkflowProcessedProperty(resolver, payloadPath);
                 assetManager.moveAsset(payloadPath, destinationPathWithFile);
-                session.save();
-                session.logout();
+                resolver.commit();
                 workItem.getWorkflowData().getMetaDataMap().put(PATH, destinationPathWithFile);
             }
-        } catch (LoginException | AssetException | RepositoryException exception) {
+        } catch (LoginException | AssetException | PersistenceException exception) {
             log.error("Error during processing of " + WORKFLOW_PROCESS_NAME + ": {}", exception.getMessage());
         }
     }
@@ -71,7 +70,7 @@ public class MoveApprovedAssetWorkflowProcess implements WorkflowProcess {
             if (contentResource != null) {
                 ModifiableValueMap properties = contentResource.adaptTo(ModifiableValueMap.class);
                 if (properties != null) {
-                    properties.put("workflowProcessed", true);
+                    properties.put(PROPERTY_WORKFLOW_PROCESSED, true);
                     log.info("Added 'workflowProcessed' property to jcr:content for resource: {}", assetPath);
                 } else {
                     log.warn("Could not adapt jcr:content to ModifiableValueMap for path: {}", assetPath);
